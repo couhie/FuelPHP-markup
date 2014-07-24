@@ -106,7 +106,7 @@ class Markup
 		$data = static::get_input($key);
 		if (isset($data))
 		{
-			$needle == $data and $ret = ' selected="selected" ';
+			$needle === $data and $ret = ' selected="selected" ';
 		}
 		return $ret;
 	}
