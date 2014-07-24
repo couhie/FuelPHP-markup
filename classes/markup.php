@@ -170,7 +170,7 @@ class Markup
 		return $ret;
 	}
 
-	public static function sorter($uri, $text, $key, $is_default = false)
+	public static function sorter($uri, $text, $key, $default = null)
 	{
 		$sort_key = \Config::get('markup.sorter.keys.sort', 'sort');
 		$order_key = \Config::get('markup.sorter.keys.order', 'order');
@@ -182,8 +182,8 @@ class Markup
 		$class = \Config::get('markup.sorter.class.base', '');
 
 		if (\Input::get($sort_key) == $key or
-			(is_null(\Input::get($sort_key)) and $is_default)) {
-			if (\Input::get($order_key) != $order_val_desc) {
+			(is_null(\Input::get($sort_key)) and ! is_null($default))) {
+			if (\Input::get($order_key) != $order_val_desc and $default != $order_val_desc) {
 				$order_val = $order_val_desc;
 				$class .= ' '.\Config::get('markup.sorter.class.active.asc', '');
 			} else {
