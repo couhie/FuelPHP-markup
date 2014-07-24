@@ -5,3 +5,5 @@ Autoloader::add_classes(
 		'Markup\\Markup' => __DIR__.'/classes/markup.php',
 	)
 );
+
+\Config::load('markup', true);

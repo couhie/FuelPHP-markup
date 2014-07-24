@@ -141,4 +141,77 @@ class Markup
 		return \Session::get_flash($key);
 	}
 
+	public static function get_sorter_sort_value($default = null)
+	{
+		$sort = \Input::get(\Config::get('markup.sorter.keys.sort', 'sort'));
+		if (is_null($sort)) $sort = $default;
+		return $sort;
+	}
+
+	public static function get_sorter_order_value($default = null)
+	{
+		$order = \Input::get(\Config::get('markup.sorter.keys.order', 'order'));
+		if (is_null($order)) $order = $default;
+		return $order;
+	}
+
+	public static function get_sorter_query_string()
+	{
+		$sort_params = array();
+		$sort = static::get_sorter_sort_value();
+		if ( ! is_null($sort))
+		{
+			$sort_params = array(
+				\Config::get('markup.sorter.keys.sort', 'sort') => $sort,
+			);
+		}
+
+		$order_params = array();
+		$order = static::get_sorter_order_value();
+		if ( ! is_null($order))
+		{
+			$order_params = array(
+				\Config::get('markup.sorter.keys.order', 'order') => $order,
+			);
+		}
+
+		$str = \Uri::build_query_string($sort_params, $order_params);
+		return $str;
+	}
+
+	public static function sorter($uri, $text, $key, $is_default = false)
+	{
+		$sort_key = \Config::get('markup.sorter.keys.sort', 'sort');
+		$order_key = \Config::get('markup.sorter.keys.order', 'order');
+		$order_val_asc = \Config::get('markup.sorter.values.order.asc', 'asc');
+		$order_val_desc = \Config::get('markup.sorter.values.order.desc', 'desc');
+
+		$sort_val = $key;
+		$order_val = $order_val_asc;
+		$class = \Config::get('markup.sorter.class.base', '');
+
+		if (\Input::get($sort_key) == $key or
+			(is_null(\Input::get($sort_key)) and $is_default)) {
+			if (\Input::get($order_key) != $order_val_desc) {
+				$order_val = $order_val_desc;
+				$class .= ' '.\Config::get('markup.sorter.class.active.asc', '');
+			} else {
+				$class .= ' '.\Config::get('markup.sorter.class.active.desc', '');
+			}
+		}
+
+		$uri = \Uri::create($uri);
+
+		if (strpos($uri, '?') === false) {
+			$uri .= "?";
+		} else {
+			$uri .= "&";
+		}
+
+		$uri .= "{$sort_key}={$sort_val}&{$order_key}={$order_val}";
+		$ret = '<a href="'.$uri.'" class="'.$class.'">'.$text.'</a>';
+
+		return $ret;
+	}
+
 }
