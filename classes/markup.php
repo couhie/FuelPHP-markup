@@ -155,28 +155,19 @@ class Markup
 		return $order;
 	}
 
-	public static function get_sorter_query_string()
+	public static function get_sorter_query_string($exclude)
 	{
-		$sort_params = array();
-		$sort = static::get_sorter_sort_value();
-		if ( ! is_null($sort))
+		$params = array();
+
+		foreach (\Input::get() as $key => $value)
 		{
-			$sort_params = array(
-				\Config::get('markup.sorter.keys.sort', 'sort') => $sort,
-			);
+			if ($key == $exclude) continue;
+			$params[] = "{$key}={$value}";
 		}
 
-		$order_params = array();
-		$order = static::get_sorter_order_value();
-		if ( ! is_null($order))
-		{
-			$order_params = array(
-				\Config::get('markup.sorter.keys.order', 'order') => $order,
-			);
-		}
+		$ret = implode('&', $params);
 
-		$str = \Uri::build_query_string($sort_params, $order_params);
-		return $str;
+		return $ret;
 	}
 
 	public static function sorter($uri, $text, $key, $is_default = false)
