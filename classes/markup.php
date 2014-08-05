@@ -155,13 +155,13 @@ class Markup
 		return $order;
 	}
 
-	public static function get_sorter_query_string($exclude)
+	public static function get_sorter_query_string($excludes)
 	{
 		$params = array();
 
 		foreach (\Input::get() as $key => $value)
 		{
-			if ($key == $exclude) continue;
+			if (in_array($key, $excludes)) continue;
 			$params[] = "{$key}={$value}";
 		}
 
