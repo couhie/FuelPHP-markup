@@ -205,4 +205,16 @@ class Markup
 		return $ret;
 	}
 
+	public static function pagination_item_first($name = null)
+	{
+		return \Pagination::instance($name)->__get('offset') + 1;
+	}
+
+	public static function pagination_item_last($name = null)
+	{
+		$total_last = \Pagination::instance($name)->__get('total_items');
+		$page_last = \Pagination::instance($name)->__get('per_page') * \Pagination::instance($name)->__get('current_page');
+		return ($total_last < $page_last) ? $total_last : $page_last;
+	}
+
 }
