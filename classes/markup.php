@@ -155,21 +155,6 @@ class Markup
 		return $order;
 	}
 
-	public static function get_sorter_query_string($excludes)
-	{
-		$params = array();
-
-		foreach (\Input::get() as $key => $value)
-		{
-			if (in_array($key, $excludes)) continue;
-			$params[] = "{$key}={$value}";
-		}
-
-		$ret = implode('&', $params);
-
-		return $ret;
-	}
-
 	public static function sorter($uri, $text, $key, $default = null)
 	{
 		$sort_key = \Config::get('markup.sorter.keys.sort', 'sort');
