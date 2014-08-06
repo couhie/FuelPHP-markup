@@ -190,6 +190,11 @@ class Markup
 		return $ret;
 	}
 
+	public static function pagination_item_total($name = null)
+	{
+		return \Pagination::instance($name)->__get('total_items');
+	}
+
 	public static function pagination_item_first($name = null)
 	{
 		return \Pagination::instance($name)->__get('offset') + 1;
