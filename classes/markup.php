@@ -82,7 +82,7 @@ class Markup
 	{
 		$ret = '';
 		$data = static::get_input($key);
-		if (isset($data))
+		if (isset($data) and $data !== '')
 		{
 			if (is_array($data))
 			{
@@ -104,10 +104,7 @@ class Markup
 	{
 		$ret = '';
 		$data = static::get_input($key);
-		if (isset($data))
-		{
-			$needle === $data and $ret = ' selected="selected" ';
-		}
+		isset($data) and $needle === $data and $ret = ' selected="selected" ';
 		return $ret;
 	}
 
